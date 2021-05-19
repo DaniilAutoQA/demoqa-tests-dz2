@@ -29,7 +29,7 @@ public class PracticeFormTest {
         $("[for=hobbies-checkbox-3]").click();
 
         $("#submit").click();
-        
+
         $(".modal-body").shouldHave(text("Nata"), text("Svitlychna"), text("nata@mail.ma"),
                 text("Female"), text("1234567890"));
 
