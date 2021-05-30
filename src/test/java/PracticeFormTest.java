@@ -1,6 +1,11 @@
 import com.codeborne.selenide.Configuration;
+import com.github.javafaker.Faker;
+import components.CalendarComponent;
+import enm.Gender;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import pages.OutputFormPage;
+import pages.RegistrationPage;
 
 import java.io.File;
 
@@ -9,54 +14,58 @@ import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
-public class PracticeFormTest {
+public class PracticeFormTest extends TestBase {
 
-    @BeforeAll
-    static void setup() {
-        Configuration.startMaximized = true;
-    }
+    Faker faker = new Faker();
+
+    String firstName = faker.name().firstName(),
+            lastName = faker.name().lastName(),
+            email = faker.internet().emailAddress(),
+            gender = Gender.getRandom().toString(),
+            mobile = faker.number().digits(10),
+            monthOfBirth = "May",
+            yearOfBirth = "2004",
+            dayOfBirth = "27",
+            subject = "Chemistry",
+            hobby = "Sports",
+            picture = "cat.png",
+            currentAddress = faker.address().fullAddress(),
+            state = "Uttar Pradesh",
+            city = "Merrut";
+
+    RegistrationPage registrationPage = new RegistrationPage();
+    CalendarComponent birthDay = new CalendarComponent();
+    OutputFormPage outputFormPage = new OutputFormPage();
 
     @Test
     void successfulSubmitFormTest() {
-        open("https://demoqa.com/automation-practice-form");
 
-        $("#firstName").setValue("Nata");
-        $("#lastName").setValue("Svitlychna");
-        $("#userEmail").setValue("nata@mail.ma");
-        $("[for=gender-radio-2]").click();
-        $("#userNumber").setValue("1234567890");
-        $("#currentAddress").setValue("My Adress");
-
-        //Date
-        $("[id=dateOfBirthInput]").click();
-        $(".react-datepicker__month-select").selectOption("December");
-        $(".react-datepicker__year-select").selectOption("1999");
-        $("[aria-label='Choose Thursday, December 9th, 1999']").click();
-        //Date
-
-        $("#subjectsInput").setValue("What is this?");
-        $("[for=hobbies-checkbox-1]").click();
-        $("[for=hobbies-checkbox-2]").click();
-        $("#hobbies-checkbox-3").parent().click();
-
-        // select Picture
-        $("#uploadPicture").uploadFile(new File("src/test/resources/cat.png"));
-
-        // select state and city
-        $("#state").click();
-        $(byText("Rajasthan")).click();
-        $("#city").click();
-        $(byText("Jaipur")).click();
+        registrationPage
+                .openForm()
+                .fillFirstName(firstName)
+                .fillLastName(lastName)
+                .fillEmail(email)
+                .selectGender(gender)
+                .fillPhone(mobile);
+        birthDay.setDate(dayOfBirth, monthOfBirth, yearOfBirth);
+        registrationPage
+                .fillSubject(subject)
+                .selectHobby(hobby)
+                .uploadPicture(picture)
+                .fillAddress(currentAddress, state, city)
+                .clickOk();
 
 
-        $("#submit").click();
-
-        $(".modal-body").shouldHave(text("Nata Svitlychna"),
-                text("nata@mail.ma"), text("My Adress"),
-                text("Female"), text("1234567890"),
-                text("09 December,1999"),text("cat.png"),
-                text("Sports"), text("Reading"), text("Music"),
-                text("Rajasthan"), text("Jaipur")
-        );
+        outputFormPage.checkThisIsRegistrationConfirmationPage()
+                .checkNameLine(firstName, lastName)
+                .checkEmailLine(email)
+                .checkGenderLine(gender)
+                .checkPhoneNumberLine(mobile)
+                .checkDateOfBirthLine(dayOfBirth, monthOfBirth, yearOfBirth)
+                .checkSubjectLine(subject)
+                .checkHobbiesLine(hobby)
+                .checkPictureLine(picture)
+                .checkAddressLine(currentAddress)
+                .checkStateAndCity(state, city);
     }
 }
