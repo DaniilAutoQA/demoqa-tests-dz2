@@ -6,6 +6,7 @@ import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
+import static io.qameta.allure.Allure.step;
 
 public class RegistrationPage {
 
@@ -21,9 +22,11 @@ public class RegistrationPage {
     ;
 
     public RegistrationPage openForm(){
-        open("https://demoqa.com/automation-practice-form");
-        $(".practice-form-wrapper").shouldHave(text("Student Registration Form"));
-        return this;
+        step("Open students registration form", () -> {
+            open("https://demoqa.com/automation-practice-form");
+            $(".practice-form-wrapper").shouldHave(text("Student Registration Form"));
+        });
+            return this;
     }
 
     public RegistrationPage fillFirstName(String firstName){
@@ -67,11 +70,13 @@ public class RegistrationPage {
     }
 
     public RegistrationPage fillAddress(String address, String state, String city){
+        step("Set address", () -> {
         $("#currentAddress").val(address);
         $("#state").click();
         $("#stateCity-wrapper").$(byText(state)).click();
         $("#city").click();
         $("#stateCity-wrapper").$(byText(city)).click();
+        });
         return this;
     }
 

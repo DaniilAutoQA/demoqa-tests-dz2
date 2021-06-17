@@ -18,6 +18,7 @@ import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
+import static io.qameta.allure.Allure.step;
 
 public class PracticeFormTest extends TestBase {
 
@@ -49,20 +50,29 @@ public class PracticeFormTest extends TestBase {
     void successfulSubmitFormTest() {
 
         registrationPage
-                .openForm()
+                .openForm();
+        step("Fill students registration form", () -> {
+            step("Fill common data", () -> {
+        registrationPage
                 .fillFirstName(firstName)
                 .fillLastName(lastName)
                 .fillEmail(email)
                 .selectGender(gender)
                 .fillPhone(mobile);
+            });
+            step("Set date", () -> {
         birthDay.setDate(dayOfBirth, monthOfBirth, yearOfBirth);
+            });
+            step("Set subjects, hobbies, image", () -> {
         registrationPage
                 .fillSubject(subject)
                 .selectHobby(hobby)
                 .uploadPicture(picture)
                 .fillAddress(currentAddress, state, city)
                 .clickOk();
-
+            });
+        });
+        step("Verify successful form submit", () -> {
         outputFormPage.checkThisIsRegistrationConfirmationPage()
                 .checkNameLine(firstName, lastName)
                 .checkEmailLine(email)
@@ -74,5 +84,6 @@ public class PracticeFormTest extends TestBase {
                 .checkPictureLine(picture)
                 .checkAddressLine(currentAddress)
                 .checkStateAndCity(state, city);
+        });
     }
 }
