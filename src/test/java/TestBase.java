@@ -14,33 +14,32 @@ public abstract class TestBase {
 
     @BeforeAll
     static void setup() {
-//        SelenideLogger.addListener("AllureSelenide", new AllureSelenide());
+        SelenideLogger.addListener("AllureSelenide", new AllureSelenide());
 
         Configuration.startMaximized = true;
 
-//        DesiredCapabilities capabilities = new DesiredCapabilities();
-//
-//        capabilities.setCapability("enableVNC", true);
-//        capabilities.setCapability("enableVideo", true);
-//
-//        Configuration.browserCapabilities = capabilities;
-//        Configuration.remote = "https://user1:1234@selenoid.autotests.cloud/wd/hub/";
+        DesiredCapabilities capabilities = new DesiredCapabilities();
+
+        capabilities.setCapability("enableVNC", true);
+        capabilities.setCapability("enableVideo", true);
+
+        Configuration.browserCapabilities = capabilities;
+        Configuration.remote = "https://user1:1234@selenoid.autotests.cloud/wd/hub/";
     }
 
-//    @AfterEach
-//    public void tearDown() {
-//        String sessionId = getSessionId();
-//
-//        Attach.screenshotAs("Last screenshot");
-//        Attach.pageSource();
-//        Attach.browserConsoleLogs();
-//        closeWebDriver();
-//
-//        Attach.addVideo(sessionId);
-//    }
-//
-//    public static String getSessionId(){
-//        return ((RemoteWebDriver) getWebDriver()).getSessionId().toString();
-//    }
+    @AfterEach
+    public void tearDown() {
+        String sessionId = getSessionId();
 
+        Attach.screenshotAs("Last screenshot");
+        Attach.pageSource();
+        Attach.browserConsoleLogs();
+        closeWebDriver();
+
+        Attach.addVideo(sessionId);
+    }
+
+    public static String getSessionId(){
+        return ((RemoteWebDriver) getWebDriver()).getSessionId().toString();
+    }
 }
