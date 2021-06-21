@@ -7,5 +7,6 @@ public class TryGit {
         System.out.println("Hallo");
         System.out.println("12.06.2021");
         System.out.println("Bye");
+        System.out.println("Hi Natali, I'm Daniil");
     }
 }
