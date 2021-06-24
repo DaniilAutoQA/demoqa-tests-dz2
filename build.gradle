@@ -28,6 +28,7 @@ dependencies {
             "io.qameta.allure:allure-selenide:$allureVersion",
             "org.junit.jupiter:junit-jupiter-api:5.7.1",
             "com.github.javafaker:javafaker:1.0.2",
+            "org.aeonbits.owner:owner:1.0.12",
             "org.slf4j:slf4j-api:1.7.30",
             "org.slf4j:slf4j-simple:1.7.30")
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.7.1"
@@ -40,6 +41,9 @@ tasks.withType(JavaCompile) {
 }
 
 tasks.withType(Test) {
+    systemProperties(System.getProperties())
+
+    systemProperty("browser", System.getProperty("browser", "opera"))
     useJUnitPlatform()
 
     testLogging {
@@ -48,5 +52,17 @@ tasks.withType(Test) {
             events "started", "skipped", "failed", "standard_error", "standard_out"
             exceptionFormat "short"
         }
+    }
+}
+
+task some_run(type: Test) {
+    useJUnitPlatform {
+        includeTags 'terminal'
+    }
+}
+
+task owner_test(type: Test) {
+    useJUnitPlatform {
+        includeTags 'owner'
     }
 }
