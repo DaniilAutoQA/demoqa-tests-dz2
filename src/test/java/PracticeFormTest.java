@@ -44,7 +44,7 @@ public class PracticeFormTest extends TestBase {
             picture = "cat.png",
             currentAddress = faker.address().fullAddress(),
             state = "Uttar Pradesh",
-            city = "Merrut";
+            city = "Agra";
 
     @Test
     void successfulSubmitFormTest() {
