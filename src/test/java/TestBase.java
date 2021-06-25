@@ -31,9 +31,9 @@ public abstract class TestBase {
         capabilities.setCapability("enableVideo", true);
 
         Configuration.browserCapabilities = capabilities;
-//        Configuration.remote = "https://user1:1234@selenoid.autotests.cloud/wd/hub/";
-        Configuration.remote = String.format("https://%s:%s@%s/wd/hub/",
-                credentials.login(), credentials.password(), credentials.url());
+        Configuration.remote = "https://user1:1234@selenoid.autotests.cloud/wd/hub/";
+//        Configuration.remote = String.format("https://%s:%s@%s/wd/hub/",
+//                credentials.login(), credentials.password(), credentials.url());
     }
 
     @AfterEach
