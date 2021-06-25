@@ -43,7 +43,7 @@ tasks.withType(JavaCompile) {
 tasks.withType(Test) {
     systemProperties(System.getProperties())
 
-    systemProperty("browser", System.getProperty("browser", "opera"))
+
     useJUnitPlatform()
 
     testLogging {
