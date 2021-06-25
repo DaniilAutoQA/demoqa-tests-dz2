@@ -9,8 +9,10 @@ import org.aeonbits.owner.Config;
 })
 public interface CredentialsConfig extends Config {
 
+    @Key("login")
     String login();
 
+    @Key("password")
     String password();
 
     String remoteUrl();
